@@ -9,7 +9,7 @@
         android:theme="@style/Theme.MealMania">
 
         <activity
-            android:name=".MealManiaActivity"
+            android:name=".presentation.MealManiaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

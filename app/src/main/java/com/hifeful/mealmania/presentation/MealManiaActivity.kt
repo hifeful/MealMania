@@ -1,9 +1,10 @@
-package com.hifeful.mealmania
+package com.hifeful.mealmania.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
-import com.hifeful.mealmania.home.HomeFragment
+import com.hifeful.mealmania.R
+import com.hifeful.mealmania.presentation.home.HomeFragment
 
 class MealManiaActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.hifeful.mealmania.home
+package com.hifeful.mealmania.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
