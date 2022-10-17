@@ -6,8 +6,11 @@ import com.badoo.mvicore.feature.ActorReducerFeature
 import com.hifeful.mealmania.domain.model.Meal
 import com.hifeful.mealmania.domain.repository.MealsRepository
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class HomeFeature(
+class HomeFeature @Inject constructor(
     initialState: State,
     actor: Actor<State, Wish, Effect>,
     reducer: Reducer<State, Effect>
@@ -38,6 +41,8 @@ class HomeFeature(
         override fun invoke(state: State, action: Wish): Observable<out Effect> =
             when (action) {
                 is Wish.LoadRandomMeal -> mealsRepository.getRandomMeal()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .map { Effect.LoadedRandomMeal(it) as Effect }
                     .onErrorReturn { Effect.ErrorLoadingRandomMeal(it) }
             }

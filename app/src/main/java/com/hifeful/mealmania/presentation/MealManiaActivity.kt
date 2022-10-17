@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.presentation.home.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MealManiaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

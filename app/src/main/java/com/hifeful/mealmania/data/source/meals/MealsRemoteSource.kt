@@ -2,8 +2,11 @@ package com.hifeful.mealmania.data.source.meals
 
 import com.hifeful.mealmania.data.source.meals.dto.MealsResponse
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class MealsRemoteSource(private val mealsApiService: MealsApiService) {
+class MealsRemoteSource @Inject constructor(
+    private val mealsApiService: MealsApiService
+) {
 
     fun getMealsByName(name: String): Observable<MealsResponse> =
         mealsApiService.getMealsByName(name)
