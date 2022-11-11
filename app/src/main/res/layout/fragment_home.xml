@@ -1,75 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/textViewRandomMeal"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/random_meal"
-        android:textColor="@color/green_500"
-        android:textSize="16sp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginStart="@dimen/margin_16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:background="@color/colorBackground">
 
-    <ImageView
-        android:id="@+id/imageViewRandomMeal"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:layout_marginHorizontal="@dimen/margin_16dp"
-        android:adjustViewBounds="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewRandomMeal"
-        app:layout_constraintBottom_toTopOf="@id/textViewRecentMeals"
-        tools:src="@tools:sample/avatars"/>
+        <TextView
+            android:id="@+id/textViewRandomMeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/random_meal"
+            android:textAllCaps="true"
+            android:textColor="@color/green_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/viewGradient"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_gradient"
-        app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
-        app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
-        app:layout_constraintTop_toTopOf="@id/imageViewRandomMeal"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"/>
+        <ImageView
+            android:id="@+id/imageViewRandomMeal"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toTopOf="@id/textViewRecentMeals"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewRandomMeal"
+            tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/textViewRandomMealName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
-        app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"
-        tools:text="Meal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal name"/>
+        <View
+            android:id="@+id/viewGradient"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_gradient"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"
+            app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
+            app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
+            app:layout_constraintTop_toTopOf="@id/imageViewRandomMeal" />
 
-    <TextView
-        android:id="@+id/textViewRecentMeals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:text="@string/recent_meals"
-        android:textAllCaps="true"
-        android:textColor="@color/green_500"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewRandomMeal" />
+        <TextView
+            android:id="@+id/textViewRandomMealName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"
+            app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
+            app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
+            tools:text="Meal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewRecentMeals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/recent_meals"
+            android:textAllCaps="true"
+            android:textColor="@color/green_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewRandomMeal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLatestMeals"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewRecentMeals"
+            tools:listitem="@layout/item_latest_meal"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

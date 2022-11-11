@@ -6,7 +6,8 @@ class HomeViewStateTransformer : (HomeFeature.State) -> HomeViewState {
 
         return HomeViewState(
             randomMeal = state.randomMeal,
-            randomMealError = state.randomMealLoadingError
+            randomMealError = state.randomMealLoadingError,
+            latestMeals = state.latestMeals
         )
     }
 }

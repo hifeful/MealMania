@@ -22,16 +22,19 @@ class HomeFeature @Inject constructor(
 
     data class State(
         val randomMeal: Meal? = null,
-        val randomMealLoadingError: Throwable? = null
+        val randomMealLoadingError: Throwable? = null,
+        val latestMeals: List<Meal> = emptyList()
     )
 
     sealed class Wish {
         object LoadRandomMeal : Wish()
+        object LoadLatestMeals : Wish()
     }
 
     sealed class Effect {
         data class LoadedRandomMeal(val meal: Meal) : Effect()
         data class ErrorLoadingRandomMeal(val throwable: Throwable) : Effect()
+        data class LoadedLatestMeals(val latestMeals: List<Meal>) : Effect()
     }
 
     class ActorImpl(
@@ -45,6 +48,10 @@ class HomeFeature @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .map { Effect.LoadedRandomMeal(it) as Effect }
                     .onErrorReturn { Effect.ErrorLoadingRandomMeal(it) }
+                is Wish.LoadLatestMeals -> mealsRepository.getLatestMeals()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { Effect.LoadedLatestMeals(it) as Effect }
             }
     }
 
@@ -56,6 +63,7 @@ class HomeFeature @Inject constructor(
                 randomMealLoadingError = null
             )
             is Effect.ErrorLoadingRandomMeal -> state.copy(randomMealLoadingError = effect.throwable)
+            is Effect.LoadedLatestMeals -> state.copy(latestMeals = effect.latestMeals)
         }
     }
 }

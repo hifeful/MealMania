@@ -14,4 +14,7 @@ interface MealsApiService {
 
     @GET("random.php")
     fun getRandomMeal(): Observable<MealsResponse>
+
+    @GET("latest.php")
+    fun getLatestMeals(): Observable<MealsResponse>
 }

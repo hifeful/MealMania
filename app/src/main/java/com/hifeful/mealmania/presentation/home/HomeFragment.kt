@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import com.hifeful.mealmania.R
 import com.hifeful.mealmania.common.ObservableSourceFragment
 import com.hifeful.mealmania.databinding.FragmentHomeBinding
+import com.hifeful.mealmania.presentation.util.SpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
@@ -18,6 +21,8 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private var latestMealsAdapter: LatestMealsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +39,9 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
 
         val bindings = HomeFragmentBindings(this, homeFeature)
         bindings.setup(this)
-        onNext(HomeUiEvent.LoadRandomMeal)
+
+        setUpLatestMealsRecycler()
+        setUpLoading()
     }
 
     override fun onDestroyView() {
@@ -44,6 +51,27 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
     }
 
     override fun accept(viewState: HomeViewState?) {
-        binding.bind(viewState)
+        binding.bind(viewState, latestMealsAdapter)
+    }
+
+    private fun setUpLoading() {
+        onNext(HomeUiEvent.LoadRandomMeal)
+        onNext(HomeUiEvent.LoadLatestMeals)
+    }
+
+    private fun setUpLatestMealsRecycler() {
+        latestMealsAdapter = LatestMealsAdapter()
+        binding.recyclerViewLatestMeals.apply {
+            adapter = latestMealsAdapter
+            layoutManager = GridLayoutManager(context, 2)
+            addItemDecoration(
+                SpacingItemDecoration(
+                    context,
+                    displayMode = SpacingItemDecoration.GRID,
+                    marginValue = R.dimen.margin_24dp
+                )
+            )
+            isNestedScrollingEnabled = false
+        }
     }
 }

@@ -7,4 +7,5 @@ interface MealsRepository {
 
     fun getMealsByName(name: String): Observable<List<Meal>>
     fun getRandomMeal(): Observable<Meal>
+    fun getLatestMeals(): Observable<List<Meal>>
 }

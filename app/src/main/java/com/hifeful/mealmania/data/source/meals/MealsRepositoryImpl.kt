@@ -21,4 +21,9 @@ class MealsRepositoryImpl @Inject constructor(
             .flatMapIterable { it.meals }
             .map { it.toMeal() }
     }
+
+    override fun getLatestMeals(): Observable<List<Meal>> {
+        return mealsRemoteSource.getLatestMeals()
+            .map { it.meals.map { mealResponse -> mealResponse.toMeal() } }
+    }
 }
