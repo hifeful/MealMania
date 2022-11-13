@@ -12,6 +12,11 @@ interface MealsApiService {
         @Query("s") name: String
     ): Observable<MealsResponse>
 
+    @GET("lookup.php")
+    fun getMealById(
+        @Query("i") id: String
+    ): Observable<MealsResponse>
+
     @GET("random.php")
     fun getRandomMeal(): Observable<MealsResponse>
 

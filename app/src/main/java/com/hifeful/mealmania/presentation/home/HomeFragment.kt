@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.common.ObservableSourceFragment
 import com.hifeful.mealmania.databinding.FragmentHomeBinding
+import com.hifeful.mealmania.presentation.details.MealDetailsFragment
 import com.hifeful.mealmania.presentation.util.SpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.functions.Consumer
@@ -60,7 +62,9 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
     }
 
     private fun setUpLatestMealsRecycler() {
-        latestMealsAdapter = LatestMealsAdapter()
+        latestMealsAdapter = LatestMealsAdapter().apply {
+            onMealClickListener = { attachMealDetailsFragment(it) }
+        }
         binding.recyclerViewLatestMeals.apply {
             adapter = latestMealsAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -72,6 +76,14 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
                 )
             )
             isNestedScrollingEnabled = false
+        }
+    }
+
+    private fun attachMealDetailsFragment(id: String) {
+        parentFragmentManager.commit {
+            add(R.id.fragment_container_view, MealDetailsFragment.getInstance(id))
+            setReorderingAllowed(true)
+            addToBackStack(null)
         }
     }
 }

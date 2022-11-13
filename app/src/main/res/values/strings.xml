@@ -3,7 +3,9 @@
 
     <string name="random_meal">Random meal</string>
     <string name="recent_meals">Recent meals</string>
-    
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+
     <string name="home_page">Home</string>
     <string name="my_meals_page">My meals</string>
 </resources>

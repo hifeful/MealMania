@@ -12,6 +12,8 @@ import com.hifeful.mealmania.presentation.util.loadUrl
 class LatestMealsAdapter :
     ListAdapter<Meal, LatestMealsAdapter.LatestMealsViewHolder>(MealsDiffCallback()) {
 
+    var onMealClickListener: ((String) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LatestMealsViewHolder =
         LatestMealsViewHolder(
             ItemLatestMealBinding.inflate(
@@ -28,6 +30,7 @@ class LatestMealsAdapter :
 
         fun bind(meal: Meal) {
             with(binding) {
+                root.setOnClickListener { onMealClickListener?.invoke(meal.id) }
                 imageViewLatestMeal.loadUrl(meal.thumbnail)
                 textViewLatestMealName.text = meal.name
                 val latestMealInfo = listOf(meal.category, meal.area).joinToString(separator = ", ")

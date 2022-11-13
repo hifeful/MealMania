@@ -11,6 +11,9 @@ class MealsRemoteSource @Inject constructor(
     fun getMealsByName(name: String): Observable<MealsResponse> =
         mealsApiService.getMealsByName(name)
 
+    fun getMealById(id: String): Observable<MealsResponse> =
+        mealsApiService.getMealById(id)
+
     fun getRandomMeal(): Observable<MealsResponse> =
         mealsApiService.getRandomMeal()
 

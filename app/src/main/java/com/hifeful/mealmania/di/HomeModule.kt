@@ -11,33 +11,13 @@ import dagger.hilt.android.components.FragmentComponent
 @InstallIn(FragmentComponent::class)
 class HomeModule {
 
-//    @Provides
-//    fun provideHomeFeatureState(): HomeFeature.State =
-//        HomeFeature.State()
-
-//    @Provides
-//    fun provideHomeFeatureActor(
-//        mealsRepository: MealsRepository
-//    ): Actor<HomeFeature.State, HomeFeature.Wish, HomeFeature.Effect> =
-//        HomeFeature.ActorImpl(mealsRepository)
-
-//    @Provides
-//    fun provideHomeFeatureReducer(): Reducer<HomeFeature.State, HomeFeature.Effect> =
-//        HomeFeature.ReducerImpl()
-
     @Provides
     fun provideHomeFeature(
         mealsRepository: MealsRepository
-//        initialState: HomeFeature.State,
-//        actor: Actor<HomeFeature.State, HomeFeature.Wish, HomeFeature.Effect>,
-//        reducer: Reducer<HomeFeature.State, HomeFeature.Effect>
     ): HomeFeature =
-        HomeFeature(HomeFeature.State(), HomeFeature.ActorImpl(mealsRepository), HomeFeature.ReducerImpl())
-
-//    @Provides
-//    fun provideHomeFragmentBindings(
-//        fragment: HomeFragment,
-//        homeFeature: HomeFeature
-//    ): HomeFragmentBindings =
-//        HomeFragmentBindings(view = fragment, feature = homeFeature)
+        HomeFeature(
+            initialState = HomeFeature.State(),
+            actor = HomeFeature.ActorImpl(mealsRepository),
+            reducer = HomeFeature.ReducerImpl()
+        )
 }

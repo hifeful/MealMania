@@ -15,6 +15,12 @@ class MealsRepositoryImpl @Inject constructor(
             .map { it.toMeals() }
     }
 
+    override fun getMealById(id: String): Observable<Meal> {
+        return mealsRemoteSource.getMealById(id)
+            .flatMapIterable { it.meals }
+            .map { it.toMeal() }
+    }
+
     override fun getRandomMeal(): Observable<Meal> {
         Log.d("MealsRepositoryImpl", "loading random meal")
         return mealsRemoteSource.getRandomMeal()
