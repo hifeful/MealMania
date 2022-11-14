@@ -5,7 +5,8 @@ class MealDetailsViewStateTransformer : (MealDetailsFeature.State) -> MealDetail
     override fun invoke(state: MealDetailsFeature.State): MealDetailsViewState {
 
         return MealDetailsViewState(
-            meal = state.meal
+            meal = state.meal,
+            isAddedToRecent = state.isAddedToRecent
         )
     }
 }

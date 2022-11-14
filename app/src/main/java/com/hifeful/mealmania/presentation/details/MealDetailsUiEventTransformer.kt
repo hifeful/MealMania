@@ -4,5 +4,7 @@ class MealDetailsUiEventTransformer : (MealDetailsUiEvent) -> MealDetailsFeature
 
     override fun invoke(event: MealDetailsUiEvent): MealDetailsFeature.Wish = when (event) {
         is MealDetailsUiEvent.LoadMealDetails -> MealDetailsFeature.Wish.LoadMealDetails(event.id)
+        is MealDetailsUiEvent.AddIntoRecentMeals ->
+            MealDetailsFeature.Wish.AddIntoRecentMeals(event.meal)
     }
 }

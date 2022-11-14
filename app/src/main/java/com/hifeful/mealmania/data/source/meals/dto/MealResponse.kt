@@ -3,10 +3,8 @@ package com.hifeful.mealmania.data.source.meals.dto
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-//@Entity(tableName = "meal")
 @JsonClass(generateAdapter = true)
 data class MealResponse(
-//    @PrimaryKey
     @Json(name = "idMeal")
     val id: String,
     @Json(name = "strMeal")

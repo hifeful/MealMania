@@ -1,7 +1,7 @@
 package com.hifeful.mealmania.di
 
 import com.hifeful.mealmania.data.source.meals.MealsApiService
-import com.hifeful.mealmania.data.source.meals.MealsRepositoryImpl
+import com.hifeful.mealmania.data.MealsRepositoryImpl
 import com.hifeful.mealmania.domain.repository.MealsRepository
 import dagger.Binds
 import dagger.Module

@@ -20,15 +20,18 @@ class MealDetailsFeature @Inject constructor(
         Nothing>(initialState = initialState, actor = actor, reducer = reducer) {
 
     data class State(
-        val meal: Meal? = null
+        val meal: Meal? = null,
+        val isAddedToRecent: Boolean = false
     )
 
     sealed class Wish {
         data class LoadMealDetails(val id: String): Wish()
+        data class AddIntoRecentMeals(val meal: Meal): Wish()
     }
 
     sealed class Effect {
         data class LoadedMeal(val meal: Meal) : Effect()
+        object MealAddedIntoRecent : Effect()
     }
 
     class ActorImpl(
@@ -41,6 +44,13 @@ class MealDetailsFeature @Inject constructor(
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map { Effect.LoadedMeal(it) }
+
+                is Wish.AddIntoRecentMeals -> mealsRepository.addRecentMeal(action.meal)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { Effect.MealAddedIntoRecent }
+//                    .onError { Log.e("MealDetailsFeature", it.toString()) }
+                    .toObservable()
             }
     }
 
@@ -51,6 +61,7 @@ class MealDetailsFeature @Inject constructor(
                 is Effect.LoadedMeal -> state.copy(
                     meal = effect.meal
                 )
+                is Effect.MealAddedIntoRecent -> state.copy(isAddedToRecent = true)
             }
     }
 }

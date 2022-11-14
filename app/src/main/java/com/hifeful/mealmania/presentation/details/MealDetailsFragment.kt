@@ -51,6 +51,11 @@ class MealDetailsFragment :
     }
 
     override fun accept(viewState: MealDetailsViewState) {
+        with(viewState) {
+            if (isAddedToRecent.not()) {
+                meal?.let { onNext(MealDetailsUiEvent.AddIntoRecentMeals(it)) }
+            }
+        }
         binding.bind(viewState)
     }
 
