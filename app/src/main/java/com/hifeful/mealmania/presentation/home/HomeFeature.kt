@@ -21,18 +21,18 @@ class HomeFeature @Inject constructor(
 ) {
 
     data class State(
-        val randomMeal: Meal? = null,
+        val randomMeals: List<Meal>? = null,
         val randomMealLoadingError: Throwable? = null,
         val latestMeals: List<Meal> = emptyList()
     )
 
     sealed class Wish {
-        object LoadRandomMeal : Wish()
+        object LoadRandomMeals : Wish()
         object LoadLatestMeals : Wish()
     }
 
     sealed class Effect {
-        data class LoadedRandomMeal(val meal: Meal) : Effect()
+        data class LoadedRandomMeals(val meals: List<Meal>) : Effect()
         data class ErrorLoadingRandomMeal(val throwable: Throwable) : Effect()
         data class LoadedLatestMeals(val latestMeals: List<Meal>) : Effect()
     }
@@ -43,10 +43,10 @@ class HomeFeature @Inject constructor(
 
         override fun invoke(state: State, action: Wish): Observable<out Effect> =
             when (action) {
-                is Wish.LoadRandomMeal -> mealsRepository.getRandomMeal()
+                is Wish.LoadRandomMeals -> mealsRepository.getRandomMeals()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .map { Effect.LoadedRandomMeal(it) as Effect }
+                    .map { Effect.LoadedRandomMeals(it) as Effect }
                     .onErrorReturn { Effect.ErrorLoadingRandomMeal(it) }
                 is Wish.LoadLatestMeals -> mealsRepository.getLatestMeals()
                     .subscribeOn(Schedulers.io())
@@ -58,8 +58,8 @@ class HomeFeature @Inject constructor(
     class ReducerImpl : Reducer<State, Effect> {
 
         override fun invoke(state: State, effect: Effect): State = when (effect) {
-            is Effect.LoadedRandomMeal -> state.copy(
-                randomMeal = effect.meal,
+            is Effect.LoadedRandomMeals -> state.copy(
+                randomMeals = effect.meals,
                 randomMealLoadingError = null
             )
             is Effect.ErrorLoadingRandomMeal -> state.copy(randomMealLoadingError = effect.throwable)

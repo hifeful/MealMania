@@ -1,6 +1,7 @@
 package com.hifeful.mealmania.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,8 @@ class HomeFragment : ObservableSourceFragment<HomeUiEvent>(), Consumer<HomeViewS
     }
 
     override fun accept(viewState: HomeViewState?) {
-        binding.bind(viewState, latestMealsAdapter)
+        Log.d("HomeFragment", viewState?.randomMeals?.map { it.id }.toString())
+        binding.bind(viewState, latestMealsAdapter, requireActivity())
     }
 
     private fun setUpLoading() {

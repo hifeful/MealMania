@@ -26,43 +26,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageViewRandomMeal"
-            android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:layout_marginHorizontal="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toTopOf="@id/textViewRecentMeals"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewRandomMeal"
-            tools:src="@tools:sample/avatars" />
-
-        <View
-            android:id="@+id/viewGradient"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/background_gradient"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"
-            app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
-            app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
-            app:layout_constraintTop_toTopOf="@id/imageViewRandomMeal" />
-
-        <TextView
-            android:id="@+id/textViewRandomMealName"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerRandomMeals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginHorizontal="@dimen/margin_16dp"
-            android:layout_marginBottom="16dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewRandomMeal"
-            app:layout_constraintEnd_toEndOf="@id/imageViewRandomMeal"
-            app:layout_constraintStart_toStartOf="@id/imageViewRandomMeal"
-            tools:text="Meal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal nameMeal name" />
+            app:layout_constraintTop_toBottomOf="@id/textViewRandomMeal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutRandomMeals"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-12dp"
+            android:background="@android:color/transparent"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMaxWidth="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/viewPagerRandomMeals"/>
 
         <TextView
             android:id="@+id/textViewRecentMeals"
@@ -76,7 +62,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewRandomMeal" />
+            app:layout_constraintTop_toBottomOf="@id/viewPagerRandomMeals" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewLatestMeals"
