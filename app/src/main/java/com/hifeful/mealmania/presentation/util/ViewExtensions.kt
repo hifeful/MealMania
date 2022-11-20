@@ -8,3 +8,9 @@ fun ImageView.loadUrl(imageUrl: String) =
         .load(imageUrl)
         .centerCrop()
         .into(this)
+
+fun ImageView.loadUrlCircleCrop(imageUrl: String) =
+    Glide.with(context)
+        .load(imageUrl)
+        .circleCrop()
+        .into(this)

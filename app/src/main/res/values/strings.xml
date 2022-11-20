@@ -6,6 +6,7 @@
     <string name="ingredients">Ingredients</string>
     <string name="instructions">Instructions</string>
     <string name="recently_viewed">Recently Viewed</string>
+    <string name="favourites">Favourites</string>
 
     <string name="home_page">Home</string>
     <string name="my_meals_page">My meals</string>

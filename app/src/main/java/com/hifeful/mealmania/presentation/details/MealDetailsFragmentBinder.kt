@@ -11,6 +11,8 @@ fun FragmentMealDetailsBinding.bind(
         mealName.text = it.name
         mealCategory.text = it.category
         textViewInstructions.text = it.instructions
+        if (viewState.isFavourite != null) fabFavourite.show()
+        fabFavourite.imageTintList = viewState.getFavouriteIcon(root.context)
 
         val ingredientsAdapter = IngredientsAdapter()
         recyclerViewIngredients.adapter = ingredientsAdapter

@@ -1,9 +1,12 @@
 package com.hifeful.mealmania.domain.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "meal")
 data class Meal(
     @PrimaryKey
@@ -24,5 +27,9 @@ data class Meal(
     @ColumnInfo(name = "youtube_source")
     val youtubeSource: String?,
     @ColumnInfo(name = "ingredients")
-    val ingredients: List<Ingredient>
-)
+    val ingredients: List<Ingredient>,
+    @ColumnInfo(name = "is_favourite")
+    val isFavourite: Boolean = false,
+    @ColumnInfo(name = "favourite_timestamp")
+    val favouriteTimestamp: Long? = null
+) : Parcelable

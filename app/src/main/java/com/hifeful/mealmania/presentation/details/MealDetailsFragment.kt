@@ -37,9 +37,19 @@ class MealDetailsFragment :
 
         val bindings = MealDetailsFragmentBindings(this, mealDetailsFeature)
         bindings.setup(this)
-        hideBottomNavigation()
+        setUpViews()
         arguments?.getString(MEAL_ID)?.let {
             onNext(MealDetailsUiEvent.LoadMealDetails(it))
+        }
+    }
+
+    private fun setUpViews() {
+        hideBottomNavigation()
+
+        binding.fabFavourite.setOnClickListener {
+            arguments?.getString(MEAL_ID)?.let { id ->
+                onNext(MealDetailsUiEvent.ClickFavourite(id))
+            }
         }
     }
 
@@ -52,8 +62,14 @@ class MealDetailsFragment :
 
     override fun accept(viewState: MealDetailsViewState) {
         with(viewState) {
-            if (isAddedToRecent.not()) {
-                meal?.let { onNext(MealDetailsUiEvent.AddIntoRecentMeals(it)) }
+            when {
+                isAddedToRecent.not() -> {
+                    meal?.let { onNext(MealDetailsUiEvent.AddIntoRecentMeals(it)) }
+                }
+                isMealLoaded && isFavourite == null -> {
+                    meal?.let { onNext(MealDetailsUiEvent.IsFavourite(it.id)) }
+                }
+                else -> {}
             }
         }
         binding.bind(viewState)

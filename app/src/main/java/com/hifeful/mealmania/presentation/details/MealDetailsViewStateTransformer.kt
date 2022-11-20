@@ -6,7 +6,9 @@ class MealDetailsViewStateTransformer : (MealDetailsFeature.State) -> MealDetail
 
         return MealDetailsViewState(
             meal = state.meal,
-            isAddedToRecent = state.isAddedToRecent
+            isAddedToRecent = state.isAddedToRecent,
+            isMealLoaded = state.isMealLoaded,
+            isFavourite = state.isFavourite
         )
     }
 }

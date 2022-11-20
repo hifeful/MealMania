@@ -6,5 +6,9 @@ class MealDetailsUiEventTransformer : (MealDetailsUiEvent) -> MealDetailsFeature
         is MealDetailsUiEvent.LoadMealDetails -> MealDetailsFeature.Wish.LoadMealDetails(event.id)
         is MealDetailsUiEvent.AddIntoRecentMeals ->
             MealDetailsFeature.Wish.AddIntoRecentMeals(event.meal)
+        is MealDetailsUiEvent.ClickFavourite ->
+            MealDetailsFeature.Wish.ClickFavourite(id = event.id)
+        is MealDetailsUiEvent.IsFavourite ->
+            MealDetailsFeature.Wish.IsFavourite(id = event.id)
     }
 }

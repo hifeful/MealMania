@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.databinding.ActivityMealManiaBinding
 import com.hifeful.mealmania.presentation.home.HomeFragment
+import com.hifeful.mealmania.presentation.myMeals.MyMealsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +17,7 @@ class MealManiaActivity : AppCompatActivity() {
 
     private var activeFragment: Fragment? = null
     private val homeFragment: Fragment = HomeFragment()
+    private val myMealsFragment: Fragment = MyMealsFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,24 +26,21 @@ class MealManiaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUpBottomNavigation()
-        attachHomeFragment()
-    }
-
-    private fun attachHomeFragment() {
-        supportFragmentManager.commit {
-            add(R.id.fragment_container_view, homeFragment)
-        }
     }
 
     private fun setUpBottomNavigation() {
+        addBottomNavigationFragments()
+
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeItem -> {
-                    replaceFragment(homeFragment)
+                    showFragment(homeFragment)
                     activeFragment = homeFragment
                     return@setOnItemSelectedListener true
                 }
                 R.id.myMealsPage -> {
+                    showFragment(myMealsFragment)
+                    activeFragment = myMealsFragment
                     return@setOnItemSelectedListener true
                 }
             }
@@ -50,9 +49,18 @@ class MealManiaActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemReselectedListener {  }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun addBottomNavigationFragments() {
         supportFragmentManager.commit {
-            replace(R.id.fragment_container_view, fragment)
+            add(R.id.fragment_container_view, myMealsFragment).hide(myMealsFragment)
+            add(R.id.fragment_container_view, homeFragment)
+            activeFragment = homeFragment
+        }
+    }
+
+    private fun showFragment(fragment: Fragment) {
+        supportFragmentManager.commit {
+            activeFragment?.let { hide(it) }
+            show(fragment)
         }
     }
 }

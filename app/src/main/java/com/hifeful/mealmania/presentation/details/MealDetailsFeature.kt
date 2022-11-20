@@ -21,17 +21,23 @@ class MealDetailsFeature @Inject constructor(
 
     data class State(
         val meal: Meal? = null,
-        val isAddedToRecent: Boolean = false
+        val isMealLoaded: Boolean = false,
+        val isAddedToRecent: Boolean = false,
+        val isFavourite: Boolean? = null
     )
 
     sealed class Wish {
         data class LoadMealDetails(val id: String): Wish()
         data class AddIntoRecentMeals(val meal: Meal): Wish()
+        data class IsFavourite(val id: String) : Wish()
+        data class ClickFavourite(val id: String): Wish()
     }
 
     sealed class Effect {
         data class LoadedMeal(val meal: Meal) : Effect()
         object MealAddedIntoRecent : Effect()
+        data class IsFavourite(val isFavourite: Boolean) : Effect()
+        data class FavouriteClicked(val updatedRowsCount: Int) : Effect()
     }
 
     class ActorImpl(
@@ -51,6 +57,16 @@ class MealDetailsFeature @Inject constructor(
                     .map { Effect.MealAddedIntoRecent }
 //                    .onError { Log.e("MealDetailsFeature", it.toString()) }
                     .toObservable()
+                is Wish.ClickFavourite -> mealsRepository.updateFavouriteMeal(action.id, state.isFavourite?.not() ?: true)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { Effect.FavouriteClicked(it) }
+                    .toObservable()
+                is Wish.IsFavourite -> mealsRepository.isMealFavourite(action.id)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { Effect.IsFavourite(it) }
+                    .toObservable()
             }
     }
 
@@ -59,9 +75,20 @@ class MealDetailsFeature @Inject constructor(
         override fun invoke(state: State, effect: Effect): State =
             when (effect) {
                 is Effect.LoadedMeal -> state.copy(
-                    meal = effect.meal
+                    meal = effect.meal,
+                    isMealLoaded = true,
                 )
                 is Effect.MealAddedIntoRecent -> state.copy(isAddedToRecent = true)
+                is Effect.IsFavourite -> state.copy(isFavourite = effect.isFavourite)
+                is Effect.FavouriteClicked ->  {
+                    val isFavourite = if (effect.updatedRowsCount != 0) {
+                        state.isFavourite?.not()
+                    } else {
+                        state.isFavourite
+                    }
+
+                    state.copy(isFavourite = isFavourite)
+                }
             }
     }
 }
