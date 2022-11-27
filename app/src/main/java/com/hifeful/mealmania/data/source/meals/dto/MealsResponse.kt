@@ -4,5 +4,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MealsResponse(
-    val meals: List<MealResponse>
+    val meals: List<MealResponse>?
 )

@@ -7,6 +7,8 @@
     <string name="instructions">Instructions</string>
     <string name="recently_viewed">Recently Viewed</string>
     <string name="favourites">Favourites</string>
+    <string name="no_meals_found">No Meals Were Found</string>
+    <string name="product_not_found_error">Product was not found</string>
 
     <string name="home_page">Home</string>
     <string name="my_meals_page">My meals</string>

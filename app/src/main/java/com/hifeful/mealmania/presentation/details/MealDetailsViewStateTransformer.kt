@@ -6,6 +6,7 @@ class MealDetailsViewStateTransformer : (MealDetailsFeature.State) -> MealDetail
 
         return MealDetailsViewState(
             meal = state.meal,
+            mealLoadingError = state.mealLoadingError,
             isAddedToRecent = state.isAddedToRecent,
             isMealLoaded = state.isMealLoaded,
             isFavourite = state.isFavourite

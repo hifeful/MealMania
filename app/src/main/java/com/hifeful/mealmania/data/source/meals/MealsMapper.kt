@@ -8,7 +8,7 @@ import com.hifeful.mealmania.domain.model.Meal
 private const val INGREDIENT_THUMBNAIL_URL = "https://www.themealdb.com/images/ingredients/"
 
 fun MealsResponse.toMeals(): List<Meal> =
-    this.meals.map { it.toMeal() }
+    this.meals?.map { it.toMeal() } ?: emptyList()
 
 fun MealResponse.toMeal(): Meal {
     return Meal(

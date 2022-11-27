@@ -11,6 +11,7 @@ import com.hifeful.mealmania.domain.model.Meal
 import com.hifeful.mealmania.domain.repository.MealsRepository
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.*
 import javax.inject.Inject
 
 class MealsRepositoryImpl @Inject constructor(
@@ -20,7 +21,7 @@ class MealsRepositoryImpl @Inject constructor(
 ) : MealsRepository {
 
     override fun getMealsByName(name: String): Observable<List<Meal>> {
-        return mealsRemoteSource.getMealsByName(name)
+        return mealsRemoteSource.getMealsByName(name.lowercase(Locale.US))
             .map { it.toMeals() }
     }
 
@@ -32,7 +33,7 @@ class MealsRepositoryImpl @Inject constructor(
 
     override fun getRandomMeals(): Observable<List<Meal>> {
         return Observable.range(0, 5)
-            .flatMap { 
+            .flatMap {
                 mealsRemoteSource.getRandomMeal()
                     .flatMapIterable { it.meals }
                     .map { it.toMeal() }
@@ -43,7 +44,7 @@ class MealsRepositoryImpl @Inject constructor(
 
     override fun getLatestMeals(): Observable<List<Meal>> {
         return mealsRemoteSource.getLatestMeals()
-            .map { it.meals.map { mealResponse -> mealResponse.toMeal() } }
+            .map { it.meals?.map { mealResponse -> mealResponse.toMeal() } }
     }
 
     override fun addRecentMeal(meal: Meal): Single<Long> {

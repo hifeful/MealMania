@@ -12,6 +12,17 @@
         android:layout_height="wrap_content"
         android:background="@color/colorBackground">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarHome"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:id="@+id/textViewRandomMeal"
             android:layout_width="wrap_content"
@@ -24,7 +35,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarHome" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerRandomMeals"

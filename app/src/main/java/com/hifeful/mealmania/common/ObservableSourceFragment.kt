@@ -1,6 +1,7 @@
 package com.hifeful.mealmania.common
 
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hifeful.mealmania.R
@@ -28,5 +29,13 @@ abstract class ObservableSourceFragment<T> : Fragment(), ObservableSource<T> {
     fun showBottomNavigation() {
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation)
         navBar.visibility = View.VISIBLE
+    }
+
+    fun hideActionBar() {
+        (requireActivity() as AppCompatActivity?)?.supportActionBar?.hide()
+    }
+
+    fun showActionBar() {
+        (requireActivity() as AppCompatActivity?)?.supportActionBar?.show()
     }
 }

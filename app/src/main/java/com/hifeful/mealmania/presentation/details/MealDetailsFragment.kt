@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import com.hifeful.mealmania.R
 import com.hifeful.mealmania.common.ObservableSourceFragment
 import com.hifeful.mealmania.databinding.FragmentMealDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +46,7 @@ class MealDetailsFragment :
     }
 
     private fun setUpViews() {
+        hideActionBar()
         hideBottomNavigation()
 
         binding.fabFavourite.setOnClickListener {
@@ -55,6 +58,7 @@ class MealDetailsFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        showActionBar()
         showBottomNavigation()
 
         _binding = null
@@ -63,6 +67,14 @@ class MealDetailsFragment :
     override fun accept(viewState: MealDetailsViewState) {
         with(viewState) {
             when {
+                mealLoadingError != null -> {
+                    Toast.makeText(
+                        requireContext(),
+                        resources.getString(R.string.product_not_found_error),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
                 isAddedToRecent.not() -> {
                     meal?.let { onNext(MealDetailsUiEvent.AddIntoRecentMeals(it)) }
                 }

@@ -7,6 +7,7 @@ import com.hifeful.mealmania.domain.model.Meal
 
 data class MealDetailsViewState(
     val meal: Meal?,
+    val mealLoadingError: Throwable? = null,
     val isAddedToRecent: Boolean = false,
     val isMealLoaded: Boolean = false,
     val isFavourite: Boolean? = null

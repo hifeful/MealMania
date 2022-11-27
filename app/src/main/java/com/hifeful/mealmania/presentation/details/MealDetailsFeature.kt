@@ -21,6 +21,7 @@ class MealDetailsFeature @Inject constructor(
 
     data class State(
         val meal: Meal? = null,
+        val mealLoadingError: Throwable? = null,
         val isMealLoaded: Boolean = false,
         val isAddedToRecent: Boolean = false,
         val isFavourite: Boolean? = null
@@ -35,6 +36,7 @@ class MealDetailsFeature @Inject constructor(
 
     sealed class Effect {
         data class LoadedMeal(val meal: Meal) : Effect()
+        data class MealLoadingError(val throwable: Throwable) : Effect()
         object MealAddedIntoRecent : Effect()
         data class IsFavourite(val isFavourite: Boolean) : Effect()
         data class FavouriteClicked(val updatedRowsCount: Int) : Effect()
@@ -49,7 +51,8 @@ class MealDetailsFeature @Inject constructor(
                 is Wish.LoadMealDetails -> mealsRepository.getMealById(action.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .map { Effect.LoadedMeal(it) }
+                    .map { Effect.LoadedMeal(it) as Effect }
+                    .onErrorReturn { Effect.MealLoadingError(it) as Effect }
 
                 is Wish.AddIntoRecentMeals -> mealsRepository.addRecentMeal(action.meal)
                     .subscribeOn(Schedulers.io())
@@ -77,6 +80,10 @@ class MealDetailsFeature @Inject constructor(
                 is Effect.LoadedMeal -> state.copy(
                     meal = effect.meal,
                     isMealLoaded = true,
+                )
+                is Effect.MealLoadingError -> state.copy(
+                    mealLoadingError = effect.throwable,
+                    isMealLoaded = false
                 )
                 is Effect.MealAddedIntoRecent -> state.copy(isAddedToRecent = true)
                 is Effect.IsFavourite -> state.copy(isFavourite = effect.isFavourite)
