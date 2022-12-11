@@ -47,6 +47,45 @@
                     android:host="search" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/mymeals"
+                    android:scheme="http" />
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/mymeals"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/meal"
+                    android:scheme="http" />
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/meal"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/search"
+                    android:scheme="http" />
+                <data android:host="mealmania.link"
+                    android:pathPrefix="/search"
+                    android:scheme="https" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

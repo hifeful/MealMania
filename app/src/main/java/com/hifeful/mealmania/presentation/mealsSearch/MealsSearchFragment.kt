@@ -74,7 +74,11 @@ class MealsSearchFragment :
     }
 
     override fun accept(viewState: MealsSearchViewState) {
-        binding.bind(viewState, foundMealsAdapter)
+        binding.bind(
+            viewState = viewState,
+            foundMealsAdapter = foundMealsAdapter,
+            onSearchBackPressListener = { requireActivity().onBackPressed() }
+        )
     }
 
     override fun onDestroyView() {

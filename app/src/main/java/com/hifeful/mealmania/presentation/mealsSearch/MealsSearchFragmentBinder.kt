@@ -5,7 +5,8 @@ import com.hifeful.mealmania.databinding.FragmentMealsSearchBinding
 
 fun FragmentMealsSearchBinding.bind(
     viewState: MealsSearchViewState,
-    foundMealsAdapter: FoundMealsAdapter?
+    foundMealsAdapter: FoundMealsAdapter?,
+    onSearchBackPressListener: () -> Unit
 ) {
     with(viewState) {
         linearLayoutNoMealsFound.visibility = if (foundMeals == null) {
@@ -16,4 +17,6 @@ fun FragmentMealsSearchBinding.bind(
 
         foundMealsAdapter?.submitList(foundMeals)
     }
+
+    mealsSearchView.setOnBackPressListener { onSearchBackPressListener.invoke() }
 }

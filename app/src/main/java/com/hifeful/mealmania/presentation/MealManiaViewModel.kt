@@ -10,7 +10,13 @@ import javax.inject.Inject
 class MealManiaViewModel @Inject constructor(): ViewModel() {
 
     fun handleDeeplink(appLinkData: Uri): DeeplinkResult? =
-        when (appLinkData.host) {
+        handlePage(appLinkData.host, appLinkData)
+
+    fun handleFirebaseDynamicLink(appLinkData: Uri): DeeplinkResult? =
+        handlePage(appLinkData.path?.replace(PATH_DELIMITER, EMPTY_CHARACTER), appLinkData)
+
+    private fun handlePage(pageString: String?, appLinkData: Uri): DeeplinkResult? =
+        when (pageString) {
             MY_MEALS_PAGE -> DeeplinkResult.ShowMyMealsPage
             MEALS_PAGE -> handleMealsHost(appLinkData)
             MEALS_SEARCH_PAGE -> handleMealsSearchHost(appLinkData)
@@ -51,6 +57,8 @@ class MealManiaViewModel @Inject constructor(): ViewModel() {
     companion object {
         private const val QUERIES_DELIMITER = "&"
         private const val PAIR_DELIMITER = "="
+        private const val PATH_DELIMITER = "/"
+        private const val EMPTY_CHARACTER = ""
 
         private const val MY_MEALS_PAGE = "mymeals"
         private const val MEALS_PAGE = "meal"

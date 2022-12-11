@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.databinding.ActivityMealManiaBinding
 import com.hifeful.mealmania.presentation.details.MealDetailsFragment
@@ -41,23 +42,40 @@ class MealManiaActivity : AppCompatActivity() {
         val appLinkAction: String? = intent?.action
         val appLinkData: Uri? = intent?.data
         handleDeeplink(appLinkAction, appLinkData)
+        handleFirebaseDynamicLink()
     }
 
     private fun handleDeeplink(appLinkAction: String?, appLinkData: Uri?) {
         if (Intent.ACTION_VIEW == appLinkAction && appLinkData != null) {
             Log.d("MealManiaActivity", appLinkData.toString())
-            when (val deeplinkResult = mealManiaViewModel.handleDeeplink(appLinkData)) {
-                is DeeplinkResult.ShowMyMealsPage -> {
-                    binding.bottomNavigation.selectedItemId = R.id.myMealsPage
+            handleDeeplinkResult(mealManiaViewModel.handleDeeplink(appLinkData))
+        }
+    }
+
+    private fun handleFirebaseDynamicLink() {
+        FirebaseDynamicLinks
+            .getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener {
+                Log.d("MealManiaActivity", it?.link?.path.toString())
+                it?.link?.let { uri ->
+                    handleDeeplinkResult(mealManiaViewModel.handleFirebaseDynamicLink(uri))
                 }
-                is DeeplinkResult.ShowMealsPage -> {
-                    attachMealDetailsFragment(deeplinkResult.mealId)
-                }
-                is DeeplinkResult.ApplyMealsSearch -> {
-                    attachMealsSearchFragment(deeplinkResult.searchQuery)
-                }
-                else -> {}
             }
+    }
+
+    private fun handleDeeplinkResult(deeplinkResult: DeeplinkResult?) {
+        when (deeplinkResult) {
+            is DeeplinkResult.ShowMyMealsPage -> {
+                binding.bottomNavigation.selectedItemId = R.id.myMealsPage
+            }
+            is DeeplinkResult.ShowMealsPage -> {
+                attachMealDetailsFragment(deeplinkResult.mealId)
+            }
+            is DeeplinkResult.ApplyMealsSearch -> {
+                attachMealsSearchFragment(deeplinkResult.searchQuery)
+            }
+            else -> {}
         }
     }
 
