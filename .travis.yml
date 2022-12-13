@@ -1,30 +1,30 @@
-sudo: required
-language: android
-jdk: openjdk11
-dist: trusty
-
-android:
-  licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
-  components:
-    - tools
-    - build-tools-32.0.0
-    - android-32
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
+language: java
+dist: focal
+group: edge
 
 env:
   global:
     - ANDROID_SDK_CMD_TOOLS=commandlinetools-linux-7583922_latest.zip
 
 before_install:
-  - chmod +x gradlew
+  # download and unzip Android SDK command line tools
+  - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
+  - mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
+  - mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/latest
+  # set SDK tools path variable and ANDROID_HOME
+  - export PATH=$PATH:$HOME/sdk/cmdline-tools/latest/bin
+  - export ANDROID_SDK_ROOT=$HOME/sdk
+  # create empty cfg file to prevent sdkmanager warning message
+  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
   - yes | sdkmanager "platforms;android-32"
   - yes | sdkmanager "build-tools;32.0.0"
+
+install:
+  # accept licenses for all available packages that have not already been accepted
+  - yes | sdkmanager --licenses >/dev/null
+
+before_script:
+  - chmod +x gradlew
 
 script:
   - ./gradlew clean build
