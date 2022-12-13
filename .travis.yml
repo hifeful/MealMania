@@ -25,9 +25,12 @@ install:
 before_script:
   - chmod +x gradlew
 
-script:
-  - ./gradlew clean build
-  - ./gradlew assembleDebug
+jobs:
+  include:
+    - stage: build
+      script: ./gradlew clean build
+    - stage: assemble
+      script: ./gradlew assembleDebug
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
