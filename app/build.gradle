@@ -7,10 +7,6 @@ plugins {
     id "com.google.gms.google-services"
 }
 
-def secretsPropertiesFile = rootProject.file("secrets.properties")
-def secretsProperties = new Properties()
-secretsProperties.load(new FileInputStream(secretsPropertiesFile))
-
 android {
     namespace 'com.hifeful.mealmania'
     compileSdk 32
@@ -24,7 +20,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY", secretsProperties['API_KEY'])
+        buildConfigField("String", "API_KEY", "\"${System.env.MEAL_DB_API_KEY}\"" ?: "\"1\"")
     }
 
     buildFeatures {
