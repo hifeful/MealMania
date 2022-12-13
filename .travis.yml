@@ -17,8 +17,6 @@ before_install:
   - export ANDROID_SDK_ROOT=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-  - yes | sdkmanager "platforms;android-32"
-  - yes | sdkmanager "build-tools;32.0.0"
 
 install:
   # accept licenses for all available packages that have not already been accepted
@@ -27,10 +25,12 @@ install:
 before_script:
   - chmod +x gradlew
 
-script:
-  - ./gradlew clean build
-  - ./gradlew test
-  - ./gradlew build check
+jobs:
+  include:
+    - stage: build
+      script: ./gradlew clean build
+    - stage: test
+      script: ./gradlew test
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
