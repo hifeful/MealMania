@@ -13,3 +13,4 @@
  * Material Design
  * Glide
  * Firebase Dynamic Links & Deep links
+ * Travis CI
