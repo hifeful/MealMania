@@ -17,6 +17,10 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
+env:
+  global:
+    - ANDROID_SDK_CMD_TOOLS=commandlinetools-linux-7583922_latest.zip
+
 before_install:
   - chmod +x gradlew
   - yes | sdkmanager "platforms;android-32"
