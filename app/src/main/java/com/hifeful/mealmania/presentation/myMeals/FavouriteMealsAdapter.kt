@@ -13,6 +13,9 @@ class FavouriteMealsAdapter : ListAdapter<Meal, FavouriteMealsAdapter.FavouriteM
     MealsDiffCallback()
 ) {
 
+    // It's not a listener, it's just a lambda expression.
+    // So, it would be better to have:
+    //     val onClickMeal: (String) -> Unit = {}
     var onMealClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteMealsViewHolder =
@@ -32,6 +35,7 @@ class FavouriteMealsAdapter : ListAdapter<Meal, FavouriteMealsAdapter.FavouriteM
 
         fun bind(meal: Meal) {
             with(binding) {
+                // Then, you could omit .invoke() and just use ()
                 root.setOnClickListener { onMealClickListener?.invoke(meal.id) }
                 imageViewFavouriteMeal.loadUrlCircleCrop(meal.thumbnail)
                 textViewFavouriteMealName.text = meal.name
