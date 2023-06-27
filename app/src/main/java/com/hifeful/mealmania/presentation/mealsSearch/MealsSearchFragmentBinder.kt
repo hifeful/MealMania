@@ -1,6 +1,7 @@
 package com.hifeful.mealmania.presentation.mealsSearch
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.hifeful.mealmania.databinding.FragmentMealsSearchBinding
 
 fun FragmentMealsSearchBinding.bind(
@@ -16,6 +17,11 @@ fun FragmentMealsSearchBinding.bind(
         }
 
         foundMealsAdapter?.submitList(foundMeals)
+
+        if (mealsLoadingError != null) {
+            linearLayoutNoMealsFound.isVisible = false
+            linearLayoutMealLoadingError.isVisible = true
+        }
     }
 
     mealsSearchView.setOnBackPressListener { onSearchBackPressListener.invoke() }

@@ -12,6 +12,8 @@ import com.hifeful.mealmania.presentation.util.loadUrl
 class FoundMealsAdapter :
     ListAdapter<Meal, FoundMealsAdapter.FoundMealViewHolder>(MealsDiffCallback()) {
 
+    var onFoundMealClickListener: ((String) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoundMealViewHolder =
         FoundMealViewHolder(
             ItemFoundMealBinding.inflate(
@@ -28,6 +30,7 @@ class FoundMealsAdapter :
 
         fun bind(meal: Meal) {
             with(binding) {
+                root.setOnClickListener { onFoundMealClickListener?.invoke(meal.id) }
                 imageViewMeal.loadUrl(meal.thumbnail)
                 textViewMealName.text = meal.name
                 textViewMealDescription.text = meal.instructions

@@ -20,7 +20,8 @@ class MealsSearchFeature @Inject constructor(
         Nothing>(initialState = initialState, actor = actor, reducer = reducer) {
 
     data class State(
-        val foundMeals: List<Meal>? = null
+        val foundMeals: List<Meal>? = null,
+        val mealsLoadingError: Throwable? = null
     )
 
     sealed class Wish {
@@ -29,6 +30,7 @@ class MealsSearchFeature @Inject constructor(
 
     sealed class Effect {
         data class MealsFound(val meals: List<Meal>) : Effect()
+        data class MealsLoadingError(val throwable: Throwable) : Effect()
     }
 
     class ActorImpl(
@@ -40,7 +42,8 @@ class MealsSearchFeature @Inject constructor(
                 is Wish.SearchMeals -> mealsRepository.getMealsByName(action.query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .map { Effect.MealsFound(it) }
+                    .map { Effect.MealsFound(it) as Effect }
+                    .onErrorReturn { Effect.MealsLoadingError(it) as Effect }
             }
     }
 
@@ -48,7 +51,11 @@ class MealsSearchFeature @Inject constructor(
 
         override fun invoke(state: State, effect: Effect): State =
             when (effect) {
-                is Effect.MealsFound -> state.copy(foundMeals = effect.meals)
+                is Effect.MealsFound -> state.copy(
+                    foundMeals = effect.meals,
+                    mealsLoadingError = null
+                )
+                is Effect.MealsLoadingError -> state.copy(mealsLoadingError = effect.throwable)
             }
     }
 }

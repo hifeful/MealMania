@@ -5,7 +5,8 @@ class MealsSearchViewStateTransformer : (MealsSearchFeature.State) -> MealsSearc
     override fun invoke(state: MealsSearchFeature.State): MealsSearchViewState {
 
         return MealsSearchViewState(
-            foundMeals = state.foundMeals
+            foundMeals = state.foundMeals,
+            mealsLoadingError = state.mealsLoadingError
         )
     }
 }

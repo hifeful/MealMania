@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.commit
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.common.ObservableSourceFragment
 import com.hifeful.mealmania.databinding.FragmentMealsSearchBinding
+import com.hifeful.mealmania.presentation.details.MealDetailsFragment
 import com.hifeful.mealmania.presentation.util.SpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.functions.Consumer
@@ -53,7 +55,9 @@ class MealsSearchFragment :
             onNext(MealsSearchUiEvent.SearchMeals(query))
         }
 
-        foundMealsAdapter = FoundMealsAdapter()
+        foundMealsAdapter = FoundMealsAdapter().apply {
+            onFoundMealClickListener = { attachMealDetailsFragment(it) }
+        }
         binding.recyclerViewFoundMeals.apply {
             adapter = foundMealsAdapter
             addItemDecoration(
@@ -79,6 +83,14 @@ class MealsSearchFragment :
             foundMealsAdapter = foundMealsAdapter,
             onSearchBackPressListener = { requireActivity().onBackPressed() }
         )
+    }
+
+    private fun attachMealDetailsFragment(id: String) {
+        parentFragmentManager.commit {
+            add(R.id.fragment_container_view, MealDetailsFragment.getInstance(id))
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
     }
 
     override fun onDestroyView() {
