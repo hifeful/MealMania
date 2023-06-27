@@ -13,7 +13,7 @@ class FavouriteMealsAdapter : ListAdapter<Meal, FavouriteMealsAdapter.FavouriteM
     MealsDiffCallback()
 ) {
 
-    var onMealClickListener: ((String) -> Unit)? = null
+    var onClickMeal: (String) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteMealsViewHolder =
         FavouriteMealsViewHolder(
@@ -32,7 +32,7 @@ class FavouriteMealsAdapter : ListAdapter<Meal, FavouriteMealsAdapter.FavouriteM
 
         fun bind(meal: Meal) {
             with(binding) {
-                root.setOnClickListener { onMealClickListener?.invoke(meal.id) }
+                root.setOnClickListener { onClickMeal(meal.id) }
                 imageViewFavouriteMeal.loadUrlCircleCrop(meal.thumbnail)
                 textViewFavouriteMealName.text = meal.name
             }

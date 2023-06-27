@@ -1,7 +1,7 @@
 package com.hifeful.mealmania.presentation.myMeals
 
-sealed class MyMealsUiEvent {
+sealed interface MyMealsUiEvent {
 
-    object LoadRecentMeals : MyMealsUiEvent()
-    object LoadFavouriteMeals : MyMealsUiEvent()
+    object LoadRecentMeals : MyMealsUiEvent
+    object LoadFavouriteMeals : MyMealsUiEvent
 }

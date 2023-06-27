@@ -69,7 +69,7 @@ class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyM
         }
 
         favouriteMealsAdapter = FavouriteMealsAdapter().apply {
-            onMealClickListener = { attachMealDetailsFragment(it) }
+            onClickMeal = { attachMealDetailsFragment(it) }
         }
         binding.recyclerViewFavouriteMeals.apply {
             adapter = favouriteMealsAdapter
