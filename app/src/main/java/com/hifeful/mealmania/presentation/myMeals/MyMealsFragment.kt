@@ -1,28 +1,30 @@
 package com.hifeful.mealmania.presentation.myMeals
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.hifeful.mealmania.R
-import com.hifeful.mealmania.common.ObservableSourceFragment
 import com.hifeful.mealmania.databinding.FragmentMyMealsBinding
 import com.hifeful.mealmania.presentation.details.MealDetailsFragment
 import com.hifeful.mealmania.presentation.util.SpacingItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.functions.Consumer
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyMealsViewState> {
-
-    @Inject
-    lateinit var myMealsFeature: MyMealsFeature
+class MyMealsFragment : Fragment() {
 
     private var _binding: FragmentMyMealsBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: MyMealsViewModel by viewModels()
 
     private var recentMealsAdapter: RecentMealsAdapter? = null
     private var favouriteMealsAdapter: FavouriteMealsAdapter? = null
@@ -45,10 +47,8 @@ class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyM
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bindings = MyMealsFragmentBindings(this, myMealsFeature)
-        bindings.setup(this)
         setUpViews()
-
+        observeViewModel()
         setUpLoading()
     }
 
@@ -68,8 +68,15 @@ class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyM
             isNestedScrollingEnabled = false
         }
 
-        favouriteMealsAdapter = FavouriteMealsAdapter().apply {
+        favouriteMealsAdapter = FavouriteMealsAdapter(
             onClickMeal = { attachMealDetailsFragment(it) }
+        ).apply {
+            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    binding.recyclerViewFavouriteMeals.smoothScrollToPosition(0)
+
+                }
+            })
         }
         binding.recyclerViewFavouriteMeals.apply {
             adapter = favouriteMealsAdapter
@@ -77,8 +84,10 @@ class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyM
     }
 
     private fun setUpLoading() {
-        onNext(MyMealsUiEvent.LoadRecentMeals)
-        onNext(MyMealsUiEvent.LoadFavouriteMeals)
+        with(viewModel.events) {
+            trySend(MyMealsEvent.LoadRecentMeals)
+            trySend(MyMealsEvent.LoadFavouriteMeals)
+        }
     }
 
     private fun attachMealDetailsFragment(id: String) {
@@ -95,8 +104,13 @@ class MyMealsFragment : ObservableSourceFragment<MyMealsUiEvent>(), Consumer<MyM
         _binding = null
     }
 
-    override fun accept(viewState: MyMealsViewState) {
-        Log.d("MyMealsFragment", viewState.favouriteMeals.toString())
-        binding.bind(viewState, recentMealsAdapter, favouriteMealsAdapter)
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect {
+                    binding.bind(it, recentMealsAdapter, favouriteMealsAdapter)
+                }
+            }
+        }
     }
 }
