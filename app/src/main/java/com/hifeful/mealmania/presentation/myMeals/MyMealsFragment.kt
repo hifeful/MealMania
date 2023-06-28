@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.hifeful.mealmania.R
 import com.hifeful.mealmania.databinding.FragmentMyMealsBinding
 import com.hifeful.mealmania.presentation.details.MealDetailsFragment
@@ -69,7 +70,14 @@ class MyMealsFragment : Fragment() {
 
         favouriteMealsAdapter = FavouriteMealsAdapter(
             onClickMeal = { attachMealDetailsFragment(it) }
-        )
+        ).apply {
+            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    binding.recyclerViewFavouriteMeals.smoothScrollToPosition(0)
+
+                }
+            })
+        }
         binding.recyclerViewFavouriteMeals.apply {
             adapter = favouriteMealsAdapter
         }
