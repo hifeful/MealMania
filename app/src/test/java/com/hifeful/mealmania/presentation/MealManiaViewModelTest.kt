@@ -3,6 +3,7 @@ package com.hifeful.mealmania.presentation
 import android.net.Uri
 import android.support.test.runner.AndroidJUnit4
 import com.hifeful.mealmania.presentation.util.DeeplinkResult
+import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -12,110 +13,87 @@ class MealManiaViewModelTest {
     private val viewModel = MealManiaViewModel()
 
     @Test
-    fun `Given mymeals page deeplink, When handleDeeplink is called, Then ShowMyMealsPage DeeplinkResult should be returned`() {
-        // Given
+    fun `with mymeals page deeplink - on handleDeeplink - it should return ShowMyMealsPage DeeplinkResult`() {
         val uri = Uri.parse("mealmania://mymeals")
         
-        // When
         val actual = viewModel.handleDeeplink(uri)
 
-        // Then
-        assert(actual is DeeplinkResult.ShowMyMealsPage)
+        Assertions.assertThat(actual).isInstanceOf(DeeplinkResult.ShowMyMealsPage::class.java)
     }
 
     @Test
-    fun `Given meals search deeplink, When handleDeeplink is called, Then ApplyMealsSearch DeeplinkResult should be returned`() {
-        // Given
+    fun `with meals search deeplink - on handleDeeplink - it should return ApplyMealsSearch DeeplinkResult`() {
         val uri = Uri.parse("mealmania://search?q=soup")
 
-        // When
         val actual = viewModel.handleDeeplink(uri)
 
-        // Then
-        assert(actual == DeeplinkResult.ApplyMealsSearch("soup"))
+        Assertions.assertThat(actual)
+            .isEqualTo(DeeplinkResult.ApplyMealsSearch("soup"))
     }
 
     @Test
-    fun `Given meals details page deeplink, When handleDeeplink is called, Then ShowMealsPage DeeplinkResult should be returned`() {
-        // Given
+    fun `with meals details page deeplink - on handleDeeplink - it should return ShowMealsPage DeeplinkResult`() {
         val uri = Uri.parse("mealmania://meal?id=123")
 
-        // When
         val actual = viewModel.handleDeeplink(uri)
 
-        // Then
-        assert(actual == DeeplinkResult.ShowMealsPage("123"))
+        Assertions.assertThat(actual)
+            .isEqualTo(DeeplinkResult.ShowMealsPage("123"))
     }
 
     @Test
-    fun `Given not supported deeplink, When handleDeeplink is called, Then null should be returned`() {
-        // Given
+    fun `with unsupported deeplink - on handleDeeplink - it should return no deeplink`() {
         val uri = Uri.parse("mealmania://receipt?id=123&name=potato")
 
-        // When
         val actual = viewModel.handleDeeplink(uri)
 
-        // Then
-        assert(actual == null)
+        Assertions.assertThat(actual).isNull()
     }
 
     @Test
-    fun `Given unknown deeplink, When handleDeeplink is called, Then null should be returned`() {
-        // Given
+    fun `with unknown deeplink - on handleDeeplink - it should return null`() {
         val uri = Uri.parse("unknown")
 
-        // When
         val actual = viewModel.handleDeeplink(uri)
 
-        // Then
-        assert(actual == null)
+        Assertions.assertThat(actual).isNull()
     }
 
     @Test
-    fun `Given mymeals page firebase dynamic link, When handleFirebaseDynamicLink is called, Then ShowMyMealsPage DeeplinkResult should be returned`() {
-        // Given
+    fun `with mymeals page firebase dynamic link - on handleFirebaseDynamicLink - it should return ShowMyMealsPage DeeplinkResult`() {
         val uri = Uri.parse("https://mealmania.page.link/mymeals")
 
-        // When
         val actual = viewModel.handleFirebaseDynamicLink(uri)
 
-        // Then
-        assert(actual is DeeplinkResult.ShowMyMealsPage)
+        Assertions.assertThat(actual).isInstanceOf(DeeplinkResult.ShowMyMealsPage::class.java)
     }
 
     @Test
-    fun `Given meals search firebase dynamic link, When handleFirebaseDynamicLink is called, Then ApplyMealsSearch DeeplinkResult should be returned`() {
-        // Given
+    fun `with meals search firebase dynamic link - on handleFirebaseDynamicLink - it should return ApplyMealsSearch DeeplinkResult`() {
         val uri = Uri.parse("https://mealmania.link/search?q=soup")
 
-        // When
         val actual = viewModel.handleFirebaseDynamicLink(uri)
 
-        // Then
-        assert(actual == DeeplinkResult.ApplyMealsSearch("soup"))
+        Assertions.assertThat(actual)
+            .isEqualTo(DeeplinkResult.ApplyMealsSearch("soup"))
     }
 
     @Test
-    fun `Given meals details page firebase dynamic link, When handleFirebaseDynamicLink is called, Then ShowMealsPage DeeplinkResult should be returned`() {
-        // Given
+    fun `with meals details page firebase dynamic link - on handleFirebaseDynamicLink - it should return ShowMealsPage DeeplinkResult`() {
         val uri = Uri.parse("https://mealmania.link/meal?id=123")
 
-        // When
         val actual = viewModel.handleFirebaseDynamicLink(uri)
 
-        // Then
-        assert(actual == DeeplinkResult.ShowMealsPage("123"))
+        Assertions.assertThat(actual)
+            .isEqualTo(DeeplinkResult.ShowMealsPage("123"))
     }
 
     @Test
-    fun `Given not supported firebase dynamic link, When handleFirebaseDynamicLink is called, Then null should be returned`() {
-        // Given
+    fun `with unsupported firebase dynamic link - on handleFirebaseDynamicLink - it should return null`() {
         val uri = Uri.parse("https://mealmania.link/receipt?id=123&name=potato")
 
-        // When
         val actual = viewModel.handleFirebaseDynamicLink(uri)
 
-        // Then
-        assert(actual == null)
+        Assertions.assertThat(actual).isNull()
     }
 }
